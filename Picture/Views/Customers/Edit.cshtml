@@ -1,0 +1,61 @@
+﻿@model Picture.Models.Customer
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Customer</h4>
+<hr />
+
+
+
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-4">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomerImages" class="control-label">Upload Additional Images</label>
+                <input type="file" name="Pictures" multiple />
+            </div>
+
+            <h4>Existing Images</h4>
+            <div>
+                @{
+                    if (Model.CustomerImages?.Any() ?? true)
+                    {
+                        <div class="row">
+                            <div class="form-check m-3">
+                                <input class="form-check-input" type="checkbox" id="chkRemoveImage" name="chkRemoveImage">
+                                <label class="form-check-label" for="chkRemoveImage">
+                                    <strong>Check to remove Image</strong>
+                                </label>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

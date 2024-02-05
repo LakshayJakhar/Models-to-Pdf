@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Picture.Models.Customer>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var customer in Model)
+        {
+            <tr>
+                <td>
+                    @{
+                        if (customer.CustomerImages?.Any() ?? false)
+                        {
+                            foreach (var image in customer.CustomerImages)
+                            {
+                                string imageBase64 = Convert.ToBase64String(image.Content);
+                                string imageSrc = string.Format("data:" + image.MimeType + ";base64,{0}", imageBase64);
+                                <img src="@imageSrc" alt="Customer Image" title="Customer Image" class="img-fluid rounded" />
+                            }
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => customer.Name)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@customer.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@customer.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@customer.Id">Delete</a> |
+                    <a href="@Url.Action("DownloadPDF", "Customers", new { id = customer.Id })">Download PDF</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
